@@ -26,13 +26,11 @@ function openTab(tabId) {
         const content = selectedTab.querySelector("#content");
     
         if (menu == 'format') {
-            const unformattedJsonString = content.value;
-            const formattedJsonString = JSON.stringify(JSON.parse(unformattedJsonString), null, 2);
-            content.value = formattedJsonString;
+            const unformattedString = content.value.replace(/\s/g, "").replace(/\\n/g, "");
+            content.value = formatter(unformattedString);
         } else if (menu == 'remove') {
-            const formattedJsonString = content.value;
-            const unformattedJsonString = JSON.stringify(JSON.parse(formattedJsonString));
-            content.value = unformattedJsonString;
+            const formattedString = content.value;
+            content.value = formattedString.replace(/\s/g, "").replace(/\\n/g, "");
         } else if (menu == 'clear') {
             content.value = '';
         } else if (menu == 'rename') {
@@ -94,6 +92,41 @@ function addNewTab() {
 
     // Show the new tab content
     openTab(newTabId);
+}
+
+const formatter = (str) => {
+    let result = "";
+    try {
+        const formattedJsonString = JSON.stringify(JSON.parse(str), null, 2);
+        result = formattedJsonString;
+    } catch (err) {
+        let r = "";
+        const NEW_LINE = "\n";
+
+        const WHITE_SPACE = (st) => {
+            let s = "";
+            for (let i = 0; i < st * 2; i++) {
+                s += " ";
+            }
+            return s;
+        };
+
+        let inx = 1;
+        for (let i = 0; i < str.length; i++) {
+            const pr = str[i];
+            if (pr == '[' || pr == '{') {
+                r += pr + NEW_LINE + WHITE_SPACE(inx++);
+            } else if (pr == ']' || pr == '}') {
+                r += NEW_LINE + WHITE_SPACE(--inx - 1) + pr;
+            } else if (pr == ',') {
+                r += pr + NEW_LINE + WHITE_SPACE(inx - 1);
+            } else {
+                r += pr;
+            }
+        }
+        result = r;
+    }
+    return result;
 }
 
 openTab("tab1");
