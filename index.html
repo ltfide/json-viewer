@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="json_logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <title>Json Viewer</title>
+</head>
+<body>
+    <div class="box">
+        <div class="tabs">
+            <button class="tab1-button" id="tab" onclick="openTab('tab1')">Tab 1</button>
+        </div>
+        <button class="tab-button" onclick="addNewTab()">+</button>
+    </div>
+    
+    <div id="tab1" class="tab-content">
+        <textarea name="content" id="content">testing</textarea>
+        <div id="tab-menu">
+            <button name="format">format</button>
+            <button name="remove">remove white space</button>
+            <button name="clear">clear</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
