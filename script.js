@@ -26,11 +26,12 @@ function openTab(tabId) {
         const content = selectedTab.querySelector("#content");
     
         if (menu == 'format') {
-            const unformattedString = content.value.replace(/\s/g, "").replace(/\\n/g, "");
+            const unformattedString = content.value;
             content.value = formatter(unformattedString);
         } else if (menu == 'remove') {
             const formattedString = content.value;
-            content.value = formattedString.replace(/\s/g, "").replace(/\\n/g, "");
+            content.value = formattedString.replace(/(".*?")|\s+/g, (m, p1) => p1 ? p1 : '')
+                                        .replace(/\\n/g, "");
         } else if (menu == 'clear') {
             content.value = '';
         } else if (menu == 'rename') {
@@ -100,6 +101,7 @@ const formatter = (str) => {
         const formattedJsonString = JSON.stringify(JSON.parse(str), null, 2);
         result = formattedJsonString;
     } catch (err) {
+        str = str.replace(/(".*?")|\s+/g, (m, p1) => p1 ? p1 : '');
         let r = "";
         const NEW_LINE = "\n";
 
